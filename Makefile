@@ -6,9 +6,10 @@ build_node:
 	docker stop promtest
 
 build_node_k8s:
-	./dockerLogin.sh
-	cd K8s
-	kubectl kustomize . | kubectl apply -f -
+
+	./dockerLogin.sh	
+	echo "PORT=5089" >> K8s/.env
+	kubectl kustomize K8s | kubectl apply -f -
 	kubectl get po -A
 
 install_livy: permitScripts
