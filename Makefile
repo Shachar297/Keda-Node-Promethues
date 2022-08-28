@@ -11,15 +11,20 @@ build_node_k8s:
 	kubectl kustomize . | kubectl apply -f -
 	kubectl get po -A
 
-install_livy:
+install_livy: permitScripts
 	./livy/install.sh
 
 install_keda:
 	kubectl apply -f https://github.com/kedacore/keda/releases/download/v2.8.0/keda-2.8.0.yaml
 	kubectl apply -f keda/scaler.yml
 
-install_prometheus:	
+install_prometheus: permitScripts	
 	./promethues/install.sh
 
+permitScripts:
+	chmod +x dockerLogin.sh
+	chmod +x dockerCreds.sh
+	chmod +x livy/install.sh
+	chmod +x promethues/install.sh
 
-all: build_node build_node_k8s install_livy install_keda install_prometheus
+all: permitScripts build_node build_node_k8s install_livy install_keda install_prometheus
