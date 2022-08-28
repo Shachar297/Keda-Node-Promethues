@@ -1,0 +1,10 @@
+triggers:
+- type: prometheus
+  metadata:
+    serverAddress: http://localhost:80
+    metricName: http_requests_total 
+    query: sum(rate(http_requests_total{deployment="my-deployment"}[2m])) 
+    threshold: '100.50'
+    activationThreshold: '5.5'    
+    namespace: livy
+    ignoreNullValues: false 

@@ -1,0 +1,29 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promtest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: promtest
+  template:
+    metadata:
+      labels:
+        app: promtest
+    spec:
+      containers:
+        - name: promtest
+          image: shacharovadia/promtest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5089
+          envFrom:
+            - secretRef:
+                name: promtest-secret
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"

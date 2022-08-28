@@ -1,0 +1,15 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: prometheus-scaledobject
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: my-deployment
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://localhost:80
+      metricName: http_requests_total
+      threshold: '100'
+      query: sum(rate(http_requests_total{deployment="my-deployment"}[2m]))
